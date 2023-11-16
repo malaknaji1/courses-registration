@@ -26,6 +26,21 @@ namespace courses_registration.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Lookups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LookupId = table.Column<int>(type: "INTEGER", nullable: false),
+                    LookupName = table.Column<string>(type: "TEXT", nullable: false),
+                    LookupValue = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lookups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
@@ -67,6 +82,54 @@ namespace courses_registration.Migrations
                         name: "FK_Prerequisites_Courses_PrerequisiteId",
                         column: x => x.PrerequisiteId,
                         principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserTypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PermissionTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPermissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPermissions_Lookups_PermissionTypeId",
+                        column: x => x.PermissionTypeId,
+                        principalTable: "Lookups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserPermissions_Lookups_UserTypeId",
+                        column: x => x.UserTypeId,
+                        principalTable: "Lookups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
+                    UserTypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Users_Lookups_UserTypeId",
+                        column: x => x.UserTypeId,
+                        principalTable: "Lookups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -118,6 +181,27 @@ namespace courses_registration.Migrations
                 name: "IX_Prerequisites_PrerequisiteId",
                 table: "Prerequisites",
                 column: "PrerequisiteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPermissions_PermissionTypeId",
+                table: "UserPermissions",
+                column: "PermissionTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPermissions_UserTypeId",
+                table: "UserPermissions",
+                column: "UserTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserTypeId",
+                table: "Users",
+                column: "UserTypeId");
         }
 
         /// <inheritdoc />
@@ -130,10 +214,19 @@ namespace courses_registration.Migrations
                 name: "Prerequisites");
 
             migrationBuilder.DropTable(
+                name: "UserPermissions");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "Lookups");
         }
     }
 }

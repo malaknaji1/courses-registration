@@ -10,7 +10,7 @@ using courses_registration.Data;
 namespace courses_registration.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231109113919_InitialMigration")]
+    [Migration("20231116113324_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -65,6 +65,28 @@ namespace courses_registration.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("courses_registration.Models.Lookup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LookupId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("LookupName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LookupValue")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Lookups");
                 });
 
             modelBuilder.Entity("courses_registration.Models.Prerequisite", b =>
@@ -127,6 +149,57 @@ namespace courses_registration.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("courses_registration.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("UserTypeId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("courses_registration.Models.UserPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PermissionTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionTypeId");
+
+                    b.HasIndex("UserTypeId");
+
+                    b.ToTable("UserPermissions");
+                });
+
             modelBuilder.Entity("courses_registration.Models.Enrollment", b =>
                 {
                     b.HasOne("courses_registration.Models.Course", "Course")
@@ -165,11 +238,50 @@ namespace courses_registration.Migrations
                     b.Navigation("PrerequisiteCourse");
                 });
 
+            modelBuilder.Entity("courses_registration.Models.User", b =>
+                {
+                    b.HasOne("courses_registration.Models.Lookup", "UserType")
+                        .WithMany("Users")
+                        .HasForeignKey("UserTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserType");
+                });
+
+            modelBuilder.Entity("courses_registration.Models.UserPermission", b =>
+                {
+                    b.HasOne("courses_registration.Models.Lookup", "PermissionType")
+                        .WithMany("PermissionType")
+                        .HasForeignKey("PermissionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("courses_registration.Models.Lookup", "UserType")
+                        .WithMany("UserTypePermissions")
+                        .HasForeignKey("UserTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PermissionType");
+
+                    b.Navigation("UserType");
+                });
+
             modelBuilder.Entity("courses_registration.Models.Course", b =>
                 {
                     b.Navigation("Enrollments");
 
                     b.Navigation("Prerequisites");
+                });
+
+            modelBuilder.Entity("courses_registration.Models.Lookup", b =>
+                {
+                    b.Navigation("PermissionType");
+
+                    b.Navigation("UserTypePermissions");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("courses_registration.Models.Student", b =>

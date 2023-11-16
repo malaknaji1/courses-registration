@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using courses_registration.DTO;
+using courses_registration.Helpers;
 using courses_registration.Interfaces;
 using courses_registration.Models;
+using courses_registration.Resources;
 using courses_registration.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using System.Globalization;
 
 namespace courses_registration.Controllers
 {
@@ -15,14 +19,15 @@ namespace courses_registration.Controllers
         private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<CourseDTO> _courseValidator;
-
-        public CoursesController(ICourseRepository courseRepository, IMapper mapper, IValidator<CourseDTO> courseValidator)
+        private readonly Localizer _localizer;
+        public CoursesController(ICourseRepository courseRepository, IMapper mapper, IValidator<CourseDTO> courseValidator, Localizer localizer)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
             _courseValidator = courseValidator;
+            _localizer=localizer;
         }
-
+        
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(CourseDTO))]
         [ProducesResponseType(400)]
@@ -44,11 +49,14 @@ namespace courses_registration.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreateCourse([FromBody] CourseDTO course)
         {
+        
+
             if (course == null)
                 return BadRequest(ModelState);
 
             if (_courseRepository.IsCourseNameExisits(course.Name))
             {
+                
                 ModelState.AddModelError("", "Course already exists");
                 return StatusCode(422, ModelState);
             }
@@ -64,8 +72,8 @@ namespace courses_registration.Controllers
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-
-            return Ok("Successfully created");
+          
+            return Ok(_localizer.GetLocalized("successfullyCreated","Course"));
         }
 
         [HttpPut("{id}")]
@@ -82,6 +90,7 @@ namespace courses_registration.Controllers
 
             if (_courseRepository.IsCourseNameExisits(course.Name))
             {
+                
                 ModelState.AddModelError("", "Course already exists");
                 return StatusCode(422, ModelState);
             }

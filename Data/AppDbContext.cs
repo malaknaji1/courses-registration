@@ -14,6 +14,9 @@ namespace courses_registration.Data
         public DbSet<Prerequisite> Prerequisites { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Lookup> Lookups { get; set; }
+        public DbSet<UserPermission> UserPermissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +40,25 @@ namespace courses_registration.Data
                 .HasOne(e => e.Course)
                 .WithMany(c => c.Enrollments)
                 .HasForeignKey(e => e.CourseId);
+
+            modelBuilder.Entity<User>()
+            .HasOne(u => u.UserType)
+            .WithMany(l => l.Users)
+            .HasForeignKey(u => u.UserTypeId);
+
+            modelBuilder.Entity<UserPermission>()
+            .HasOne(up => up.UserType)
+            .WithMany(l => l.UserTypePermissions)
+            .HasForeignKey(up => up.UserTypeId);
+
+            modelBuilder.Entity<UserPermission>()
+                .HasOne(up => up.PermissionType)
+                .WithMany(l => l.PermissionType)
+                .HasForeignKey(up => up.PermissionTypeId);
+
+            modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using courses_registration.DTO;
+using courses_registration.Helpers;
 using courses_registration.Interfaces;
 using courses_registration.Models;
 using courses_registration.Repositories;
@@ -12,31 +13,31 @@ namespace courses_registration.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class StudentsController : BaseController
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<StudentDTO> _studentValidator;
 
-        public StudentsController(IStudentRepository studentRepository , IMapper mapper, IValidator<StudentDTO> studentValidator)
+        public StudentsController(IStudentRepository studentRepository , IMapper mapper, IValidator<StudentDTO> studentValidator, Localizer localizer): base(localizer)
         {
             _studentRepository = studentRepository;
             _mapper = mapper;
             _studentValidator = studentValidator;
         }
-
+        [BasicAuthFilter()]
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(StudentDTO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult getStudent(int id)
+        public IActionResult GetStudent(int id)
         {
             if (!_studentRepository.StudentExists(id))
-                return NotFound();
+                return Response(HttpStatusCode.NotFound,"notFound");
 
             var student = _mapper.Map<StudentDTO>(_studentRepository.GetStudent(id));
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest,"",ModelState);
 
             return Ok(student);
         }
@@ -47,12 +48,12 @@ namespace courses_registration.Controllers
         public IActionResult CreateStudent([FromBody] StudentDTO student)
         {
             if (student == null)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest, "", ModelState);
 
             var validationResult = _studentValidator.Validate(student);
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors);
+                return Response(HttpStatusCode.BadRequest,"validationErrors",validationResult.Errors);
             }
 
             if (!_studentRepository.CreateStudent(_mapper.Map<Student>(student)))

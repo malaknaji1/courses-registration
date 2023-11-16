@@ -72,3 +72,15 @@ C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net
 C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\FluentValidation.dll
 C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\FluentValidation.AspNetCore.dll
 C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\Microsoft.Extensions.Localization.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\Microsoft.Extensions.Localization.Abstractions.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\ar\courses-registration.resources.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\obj\Debug\net7.0\courses_registration.Resources.Messages.ar.resources
+C:\Users\HP\source\repos\courses-registration\courses-registration\obj\Debug\net7.0\courses-registration.csproj.GenerateResource.cache
+C:\Users\HP\source\repos\courses-registration\courses-registration\obj\Debug\net7.0\ar\courses-registration.resources.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\en-US\courses-registration.resources.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\obj\Debug\net7.0\courses_registration.Resources.Messages.en-US.resources
+C:\Users\HP\source\repos\courses-registration\courses-registration\obj\Debug\net7.0\en-US\courses-registration.resources.dll
+C:\Users\HP\source\repos\courses-registration\courses-registration\bin\Debug\net7.0\BCrypt.Net-Next.dll

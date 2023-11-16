@@ -16,6 +16,10 @@ namespace courses_registration.Helpers
             CreateMap<Prerequisite, PrerequisiteDTO>();
             CreateMap<Enrollment, EnrollmentDTO>();
             CreateMap<EnrollmentDTO, Enrollment>();
+            CreateMap<User, UserDTO>();
+            CreateMap<UserDTO, User>();
+            CreateMap<Lookup, LookupDTO>();
+            CreateMap<LookupDTO, Lookup>();
         }
     }
 }
