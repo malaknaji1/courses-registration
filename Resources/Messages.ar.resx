@@ -117,7 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cityFormat" xml:space="preserve">
+    <value>يمكن أن تحتوي المدينة على حروف إنجليزية ومسافات فقط</value>
+  </data>
+  <data name="cityMaxLength" xml:space="preserve">
+    <value>لا يمكن أن تتجاوز اسم المدينة 30 حرفًا</value>
+  </data>
+  <data name="courseExists" xml:space="preserve">
+    <value>المساق موجود بالفعل</value>
+  </data>
+  <data name="courseNameFormat" xml:space="preserve">
+    <value>اسم المساق يمكن أن يحتوي على أحرف، أرقام، ومسافات فقط</value>
+  </data>
+  <data name="courseNameMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز اسم المساق 80 حرفًا</value>
+  </data>
+  <data name="courseNameRequired" xml:space="preserve">
+    <value>اسم المساق مطلوب</value>
+  </data>
+  <data name="courseNotFound" xml:space="preserve">
+    <value>المساق غير موجود</value>
+  </data>
+  <data name="emailFormat" xml:space="preserve">
+    <value>البريد الإلكتروني غير صالح</value>
+  </data>
+  <data name="emailMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز البريد الإلكتروني 70 حرفًا</value>
+  </data>
+  <data name="emailRequired" xml:space="preserve">
+    <value>البريد الإلكتروني مطلوب</value>
+  </data>
+  <data name="firstNameFormat" xml:space="preserve">
+    <value>الاسم الأول يمكن أن يحتوي على حروف إنجليزية ومسافات فقط</value>
+  </data>
+  <data name="firstNameMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الاسم الأول 30 حرفًا</value>
+  </data>
+  <data name="firstNameRequired" xml:space="preserve">
+    <value>الاسم الأول مطلوب</value>
+  </data>
+  <data name="lastNameFormat" xml:space="preserve">
+    <value>الاسم الأخير يمكن أن يحتوي على حروف إنجليزية ومسافات فقط</value>
+  </data>
+  <data name="lastNameMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الاسم الأخير 30 حرفًا</value>
+  </data>
+  <data name="lastNameRequired" xml:space="preserve">
+    <value>الاسم الأخير مطلوب</value>
+  </data>
+  <data name="majorMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز التخصص 50 حرفًا</value>
+  </data>
+  <data name="majorRequired" xml:space="preserve">
+    <value>التخصص مطلوب</value>
+  </data>
+  <data name="mobileFormat" xml:space="preserve">
+    <value>يمكن أن يحتوي الهاتف المحمول على '+' وأرقام فقط</value>
+  </data>
+  <data name="mobileMaxLength" xml:space="preserve">
+    <value>لا يمكن أن يتجاوز الهاتف المحمول 14 حرفًا</value>
+  </data>
+  <data name="noCoursesFound" xml:space="preserve">
+    <value>لا توجد مساقات مسجلة للطالب</value>
+  </data>
+  <data name="notFound" xml:space="preserve">
+    <value>غير موجود</value>
+  </data>
+  <data name="studentNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الطالب بالرقم المحدد</value>
+  </data>
   <data name="successfullyCreated" xml:space="preserve">
     <value>تم الإضافة بنجاح</value>
+  </data>
+  <data name="successfullyDeleted" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="successfullyUpdated" xml:space="preserve">
+    <value>تم التحديث بنجاح</value>
+  </data>
+  <data name="validationErrors" xml:space="preserve">
+    <value>أخطاء التحقق</value>
+  </data>
+  <data name="wrongDeleting" xml:space="preserve">
+    <value>حدث خطأ أثناء الحذف</value>
+  </data>
+  <data name="wrongSaving" xml:space="preserve">
+    <value>حدث خطأ أثناء الحفظ</value>
+  </data>
+  <data name="wrongUpdating" xml:space="preserve">
+    <value>حدث خطأ أثناء التحديث</value>
   </data>
 </root>

@@ -14,18 +14,16 @@ namespace courses_registration.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoursesController : ControllerBase
+    public class CoursesController : BaseController
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<CourseDTO> _courseValidator;
-        private readonly Localizer _localizer;
-        public CoursesController(ICourseRepository courseRepository, IMapper mapper, IValidator<CourseDTO> courseValidator, Localizer localizer)
+        public CoursesController(ICourseRepository courseRepository, IMapper mapper, IValidator<CourseDTO> courseValidator, Localizer localizer) : base(localizer)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
             _courseValidator = courseValidator;
-            _localizer=localizer;
         }
         
         [HttpGet("{id}")]
@@ -35,13 +33,13 @@ namespace courses_registration.Controllers
         public IActionResult getCourse(int id)
         {
             if (!_courseRepository.CourseExists(id))
-                return NotFound();
+                return Response(HttpStatusCode.NotFound, "courseNotFound");
 
             var course =_mapper.Map<CourseDTO>( _courseRepository.GetCourse(id));
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest, "", ModelState);
 
-            return Ok(course);
+            return Response(HttpStatusCode.OK, "", course);
         }
 
         [HttpPost]
@@ -52,28 +50,22 @@ namespace courses_registration.Controllers
         
 
             if (course == null)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest, "", ModelState);
 
             if (_courseRepository.IsCourseNameExisits(course.Name))
-            {
-                
-                ModelState.AddModelError("", "Course already exists");
-                return StatusCode(422, ModelState);
-            }
+                return Response(HttpStatusCode.Conflict, "courseExists");
 
             var validationResult = _courseValidator.Validate(course);
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors);
+                var validationErrors = validationResult.Errors.Select(error => error.ErrorMessage).ToArray();
+                return Response(HttpStatusCode.BadRequest, "validationErrors", validationErrors);
             }
 
             if (!_courseRepository.CreateCourse(_mapper.Map<Course>(course)))
-            {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
-            }
-          
-            return Ok(_localizer.GetLocalized("successfullyCreated","Course"));
+                return Response(HttpStatusCode.InternalServerError, "wrongSaving");
+
+            return Response(HttpStatusCode.OK, "successfullyCreated");
         }
 
         [HttpPut("{id}")]
@@ -83,31 +75,25 @@ namespace courses_registration.Controllers
         public IActionResult UpdateCourse(int id, [FromBody] CourseDTO course)
         {
             if (course == null ||id != course.Id)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest, "", ModelState);
 
             if (!_courseRepository.CourseExists(id))
-                return NotFound();
+                return Response(HttpStatusCode.NotFound, "courseNotFound");
 
             if (_courseRepository.IsCourseNameExisits(course.Name))
-            {
-                
-                ModelState.AddModelError("", "Course already exists");
-                return StatusCode(422, ModelState);
-            }
+                return Response(HttpStatusCode.Conflict, "courseExists");
 
             var validationResult = _courseValidator.Validate(course);
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors);
+                var validationErrors = validationResult.Errors.Select(error => error.ErrorMessage).ToArray();
+                return Response(HttpStatusCode.BadRequest, "validationErrors", validationErrors);
             }
 
             if (!_courseRepository.UpdateCourse(_mapper.Map<Course>(course)))
-            {
-                ModelState.AddModelError("", "Something went wrong while updating");
-                return StatusCode(500, ModelState);
-            }
+                return Response(HttpStatusCode.InternalServerError, "wrongUpdating", ModelState);
 
-            return NoContent();
+            return Response(HttpStatusCode.OK, "successfullyUpdated");
         }
 
         [HttpDelete("{id}")]
@@ -118,18 +104,17 @@ namespace courses_registration.Controllers
         {
            
             if (!_courseRepository.CourseExists(id))
-                return NotFound();
+                return Response(HttpStatusCode.NotFound, "courseNotFound");
 
             var courseToDelete = _courseRepository.GetCourse(id);
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest, "", ModelState);
 
             if (!_courseRepository.SoftDeleteCourse(courseToDelete))
-            {
-                ModelState.AddModelError("", "Something went wrong deleting course");
-            }
-            return NoContent();
+                return Response(HttpStatusCode.InternalServerError, "wrongDeleting");
+
+            return Response(HttpStatusCode.OK, "successfullyDeleted");
         }
 
         [HttpGet("{id}/prerequisites")]
@@ -141,11 +126,11 @@ namespace courses_registration.Controllers
             var prerequisiteCourses = _courseRepository.GetPrerequisiteCourses(id);
 
             if (prerequisiteCourses == null || prerequisiteCourses.Count == 0)
-                return NotFound();
+                return Response(HttpStatusCode.NotFound, "notFound");
 
             var prerequisiteCoursesDTO = _mapper.Map<List<CourseDTO>>(prerequisiteCourses);
 
-            return Ok(prerequisiteCoursesDTO);
+            return Response(HttpStatusCode.OK, "", prerequisiteCoursesDTO);
         }
 
         [HttpGet("{id}/students")]
@@ -157,11 +142,11 @@ namespace courses_registration.Controllers
             var students = _courseRepository.GetStudentsForCourse(id);
 
             if (students == null || students.Count == 0)
-                return NotFound();
+                return Response(HttpStatusCode.NotFound, "notFound");
 
             var studentsDTO = _mapper.Map<List<StudentDTO>>(students);
 
-            return Ok(studentsDTO);
+            return Response(HttpStatusCode.OK, "", studentsDTO);
         }
     }
 }

@@ -117,10 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cityFormat" xml:space="preserve">
+    <value>City can only contain English characters and spaces</value>
+  </data>
+  <data name="cityMaxLength" xml:space="preserve">
+    <value>City cannot exceed 30 characters</value>
+  </data>
+  <data name="courseExists" xml:space="preserve">
+    <value>Course already exists</value>
+  </data>
+  <data name="courseNameFormat" xml:space="preserve">
+    <value>Course name can only contain letters, numbers, and spaces</value>
+  </data>
+  <data name="courseNameMaxLength" xml:space="preserve">
+    <value>Course name cannot exceed 80 characters</value>
+  </data>
+  <data name="courseNameRequired" xml:space="preserve">
+    <value>Course name is required</value>
+  </data>
+  <data name="courseNotFound" xml:space="preserve">
+    <value>Course Not Found</value>
+  </data>
+  <data name="emailFormat" xml:space="preserve">
+    <value>Invalid email format</value>
+  </data>
+  <data name="emailMaxLength" xml:space="preserve">
+    <value>Email cannot exceed 70 characters</value>
+  </data>
+  <data name="emailRequired" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="firstNameFormat" xml:space="preserve">
+    <value>First name can only contain English characters and spaces</value>
+  </data>
+  <data name="firstNameMaxLength" xml:space="preserve">
+    <value>First name cannot exceed 30 characters</value>
+  </data>
+  <data name="firstNameRequired" xml:space="preserve">
+    <value>First name is required</value>
+  </data>
+  <data name="lastNameFormat" xml:space="preserve">
+    <value>Last name can only contain English characters and spaces</value>
+  </data>
+  <data name="lastNameMaxLength" xml:space="preserve">
+    <value>Last name cannot exceed 30 characters</value>
+  </data>
+  <data name="lastNameRequired" xml:space="preserve">
+    <value>Last name is required</value>
+  </data>
+  <data name="majorMaxLength" xml:space="preserve">
+    <value>Major cannot exceed 50 characters</value>
+  </data>
+  <data name="majorRequired" xml:space="preserve">
+    <value>Major is required</value>
+  </data>
+  <data name="mobileFormat" xml:space="preserve">
+    <value>Mobile can only contain '+' and numbers</value>
+  </data>
+  <data name="mobileMaxLength" xml:space="preserve">
+    <value>Mobile cannot exceed 14 characters</value>
+  </data>
+  <data name="noCoursesFound" xml:space="preserve">
+    <value>No courses found for the student</value>
+  </data>
   <data name="notFound" xml:space="preserve">
     <value>Not Found</value>
   </data>
+  <data name="studentNotFound" xml:space="preserve">
+    <value>The student with the specified ID was not found</value>
+  </data>
   <data name="successfullyCreated" xml:space="preserve">
     <value> Has been successfully created </value>
+  </data>
+  <data name="successfullyDeleted" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="successfullyUpdated" xml:space="preserve">
+    <value>Updated successfully</value>
+  </data>
+  <data name="validationErrors" xml:space="preserve">
+    <value>Validation Errors</value>
+  </data>
+  <data name="wrongDeleting" xml:space="preserve">
+    <value>Something went wrong while deleting</value>
+  </data>
+  <data name="wrongSaving" xml:space="preserve">
+    <value>Something went wrong while saving</value>
+  </data>
+  <data name="wrongUpdating" xml:space="preserve">
+    <value>Something went wrong while updating</value>
   </data>
 </root>

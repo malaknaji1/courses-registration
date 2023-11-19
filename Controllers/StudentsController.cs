@@ -33,13 +33,13 @@ namespace courses_registration.Controllers
         public IActionResult GetStudent(int id)
         {
             if (!_studentRepository.StudentExists(id))
-                return Response(HttpStatusCode.NotFound,"notFound");
+                return Response(HttpStatusCode.NotFound,"studentNotFound");
 
             var student = _mapper.Map<StudentDTO>(_studentRepository.GetStudent(id));
             if (!ModelState.IsValid)
                 return Response(HttpStatusCode.BadRequest,"",ModelState);
 
-            return Ok(student);
+            return Response(HttpStatusCode.OK,"",student);
         }
 
         [HttpPost]
@@ -53,16 +53,15 @@ namespace courses_registration.Controllers
             var validationResult = _studentValidator.Validate(student);
             if (!validationResult.IsValid)
             {
-                return Response(HttpStatusCode.BadRequest,"validationErrors",validationResult.Errors);
+                var validationErrors = validationResult.Errors.Select(error => error.ErrorMessage).ToArray();
+                return Response(HttpStatusCode.BadRequest,"validationErrors", validationErrors);
             }
+            
 
             if (!_studentRepository.CreateStudent(_mapper.Map<Student>(student)))
-            {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
-            }
-
-            return Ok("Successfully created");
+                return Response(HttpStatusCode.InternalServerError, "wrongSaving");
+            
+            return Response(HttpStatusCode.OK, "successfullyCreated");
         }
         
         [HttpPut("{id}")]
@@ -72,24 +71,22 @@ namespace courses_registration.Controllers
         public IActionResult UpdateStudent(int id, [FromBody] StudentDTO student)
         {
             if (student == null || id != student.Id)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest, "", ModelState);
 
             if (!_studentRepository.StudentExists(id))
-                return NotFound();
+                return Response(HttpStatusCode.NotFound,"studentNotFound");
 
             var validationResult = _studentValidator.Validate(student);
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors);
+                var validationErrors = validationResult.Errors.Select(error => error.ErrorMessage).ToArray();
+                return Response(HttpStatusCode.BadRequest, "validationErrors", validationErrors);
             }
 
             if (!_studentRepository.UpdateStudent(_mapper.Map<Student>(student)))
-            {
-                ModelState.AddModelError("", "Something went wrong while updating");
-                return StatusCode(500, ModelState);
-            }
+                return Response(HttpStatusCode.InternalServerError, "wrongUpdating", ModelState);
 
-            return NoContent();
+            return Response(HttpStatusCode.OK, "successfullyUpdated");
         }
 
         [HttpDelete("{id}")]
@@ -100,34 +97,33 @@ namespace courses_registration.Controllers
         {
 
             if (!_studentRepository.StudentExists(id))
-                return NotFound();
+                return Response(HttpStatusCode.NotFound, "studentNotFound");
 
             var studentToDelete = _studentRepository.GetStudent(id);
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Response(HttpStatusCode.BadRequest, "", ModelState);
 
             if (!_studentRepository.SoftDeleteStudent(studentToDelete))
-            {
-                ModelState.AddModelError("", "Something went wrong deleting student");
-            }
-            return NoContent();
+                return Response(HttpStatusCode.InternalServerError, "wrongDeleting");
+
+            return Response(HttpStatusCode.OK, "successfullyDeleted");
         }
 
         [HttpGet("{id}/courses")]
         [ProducesResponseType(200, Type = typeof(List<StudentDTO>))]
         [ProducesResponseType(404)]
-        public IActionResult GetStudentsForCourse(int id)
+        public IActionResult GetCoursesForStudent(int id)
         {
 
             var courses = _studentRepository.GetCoursesForStudent(id);
 
             if (courses == null || courses.Count == 0)
-                return NotFound();
+                return Response(HttpStatusCode.NotFound, "noCoursesFound");
 
             var coursesDTO = _mapper.Map<List<CourseDTO>>(courses);
 
-            return Ok(coursesDTO);
+            return Response(HttpStatusCode.OK,"",coursesDTO);
         }
     }
 }

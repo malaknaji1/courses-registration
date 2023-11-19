@@ -1,6 +1,8 @@
 ﻿using courses_registration.Helpers;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace courses_registration.Controllers
 {
@@ -10,7 +12,8 @@ namespace courses_registration.Controllers
         NoContent = 204,
         BadRequest = 400,
         NotFound = 404,
-        InternalServerError=500
+        InternalServerError=500,
+        Conflict = 409,
     }
 
     
@@ -25,6 +28,7 @@ namespace courses_registration.Controllers
 
         protected IActionResult Response(HttpStatusCode httpStatusCode, string messageKey, object data = null)
         {
+
             var response = new
             {
                 HttpStatusCode = httpStatusCode,
@@ -34,13 +38,11 @@ namespace courses_registration.Controllers
 
             switch (httpStatusCode)
             {
+
                 case HttpStatusCode.BadRequest:
                     return BadRequest(response);
 
                 case HttpStatusCode.OK:
-                    return Ok(response);
-
-                case HttpStatusCode.NoContent:
                     return Ok(response);
                 
                 case HttpStatusCode.NotFound:   

@@ -1,38 +1,42 @@
 ﻿using courses_registration.DTO;
+using courses_registration.Helpers;
 using FluentValidation;
 
 namespace courses_registration.Validators
 {
     public class StudentValidator : AbstractValidator<StudentDTO>
     {
-        public StudentValidator()
+        private readonly Localizer _localizer;
+
+        public StudentValidator(Localizer localizer)
         {
+            _localizer = localizer;
             RuleFor(student => student.FirstName)
-                .NotEmpty().WithMessage("First name is required.")
-                .MaximumLength(30).WithMessage("First name cannot exceed 30 characters")
-                .Matches("^[a-zA-Z\\s]*$").WithMessage("First name can only contain English characters and spaces");
+               .NotEmpty().WithMessage(_localizer.GetLocalized("firstNameRequired"))
+               .MaximumLength(30).WithMessage(_localizer.GetLocalized("firstNameMaxLength"))
+               .Matches("^[a-zA-Z\\s]*$").WithMessage(_localizer.GetLocalized("firstNameFormat"));
 
             RuleFor(student => student.LastName)
-                .NotEmpty().WithMessage("Last name is required.")
-                .MaximumLength(30).WithMessage("Last name cannot exceed 30 characters")
-                .Matches("^[a-zA-Z\\s]*$").WithMessage("Last name can only contain English characters and spaces");
+                .NotEmpty().WithMessage(_localizer.GetLocalized("lastNameRequired"))
+                .MaximumLength(30).WithMessage(_localizer.GetLocalized("lastNameMaxLength"))
+                .Matches("^[a-zA-Z\\s]*$").WithMessage(_localizer.GetLocalized("lastNameFormat"));
 
             RuleFor(student => student.Email)
-                .NotEmpty().WithMessage("Email is required.")
-                .MaximumLength(70).WithMessage("Email cannot exceed 70 characters.")
-                .EmailAddress().WithMessage("Invalid email format.");
+                .NotEmpty().WithMessage(_localizer.GetLocalized("emailRequired"))
+                .MaximumLength(70).WithMessage(_localizer.GetLocalized("emailMaxLength"))
+                .EmailAddress().WithMessage(_localizer.GetLocalized("emailFormat"));
 
             RuleFor(student => student.City)
-                .MaximumLength(30).WithMessage("City cannot exceed 30 characters.")
-                .Matches(@"^[a-zA-Z\s]*$").WithMessage("City can only contain English characters and spaces.");
+                .MaximumLength(30).WithMessage(_localizer.GetLocalized("cityMaxLength"))
+                .Matches(@"^[a-zA-Z\s]*$").WithMessage(_localizer.GetLocalized("cityFormat"));
 
             RuleFor(student => student.Mobile)
-                .MaximumLength(14).WithMessage("Mobile cannot exceed 14 characters.")
-                .Matches(@"^\+?[0-9]*$").WithMessage("Mobile can only contain '+' and numbers.");
+                .MaximumLength(14).WithMessage(_localizer.GetLocalized("mobileMaxLength"))
+                .Matches(@"^\+?[0-9]*$").WithMessage(_localizer.GetLocalized("mobileFormat"));
 
             RuleFor(student => student.Major)
-                .NotEmpty().WithMessage("Major is required.")
-                .MaximumLength(50).WithMessage("Major cannot exceed 50 characters.");
+                .NotEmpty().WithMessage(_localizer.GetLocalized("majorRequired"))
+                .MaximumLength(50).WithMessage(_localizer.GetLocalized("majorMaxLength"));
 
         }
     }
